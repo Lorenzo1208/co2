@@ -24,10 +24,20 @@ jobs:
 
     - name: Install dependencies
       run: |
+        source venv/bin/activate
         python -m pip install --upgrade pip
         pip install -r requirements.txt
 
-    # Optional: Add step to run tests here (PyTest, Django test suites, etc.)
+    - name: 'Run Flask app'
+      env:
+        DB_USER: ${{ secrets.DB_USER }}
+        DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+        DB_HOST: ${{ secrets.DB_HOST }}
+        DB_PORT: ${{ secrets.DB_PORT }}
+        DB_NAME: ${{ secrets.DB_NAME }}
+      run: |
+        source venv/bin/activate
+        python app.py
 
     - name: Upload artifact for deployment jobs
       uses: actions/upload-artifact@v2
@@ -49,17 +59,6 @@ jobs:
       with:
         name: python-app
         path: .
-
-    - name: 'Run Flask app'
-      env:
-        DB_USER: ${{ secrets.DB_USER }}
-        DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
-        DB_HOST: ${{ secrets.DB_HOST }}
-        DB_PORT: ${{ secrets.DB_PORT }}
-        DB_NAME: ${{ secrets.DB_NAME }}
-      run: |
-        source venv/bin/activate
-        python app.py
 
     - name: 'Deploy to Azure Web App'
       uses: azure/webapps-deploy@v2
