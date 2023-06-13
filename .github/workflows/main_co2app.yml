@@ -17,8 +17,14 @@ jobs:
       with:
         python-version: '3.x'
 
+    - name: Create and start virtual environment
+      run: |
+        python -m venv venv
+        source venv/bin/activate
+
     - name: Install dependencies
       run: |
+        source venv/bin/activate
         python -m pip install --upgrade pip
         pip install -r requirements.txt
 
@@ -52,7 +58,9 @@ jobs:
         DB_HOST: ${{ secrets.DB_HOST }}
         DB_PORT: ${{ secrets.DB_PORT }}
         DB_NAME: ${{ secrets.DB_NAME }}
-      run: python app.py
+      run: |
+        source venv/bin/activate
+        python app.py
 
     - name: 'Deploy to Azure Web App'
       uses: azure/webapps-deploy@v2
