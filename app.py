@@ -1,58 +1,42 @@
 import os
-from flask import Flask, render_template
-from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import MetaData, Table, select
-import pickle
-from flask import request
-
-# Load the model
-with open('model.pkl', 'rb') as file:
-    model = pickle.load(file)
+from flask import Flask, render_template, request
+import joblib
+import numpy as np
 
 app = Flask(__name__)
-database_uri = os.getenv('DATABASE_URI')
-if not database_uri:
-    raise RuntimeError("DATABASE_URI not set in environment")
-app.config['SQLALCHEMY_DATABASE_URI'] = database_uri
-print(f"Database URI: {app.config['SQLALCHEMY_DATABASE_URI']}")
 
-db = SQLAlchemy(app)
-meta = MetaData()
+# Charger les modèles et les scalers
+model_emission = joblib.load('modelemission.pkl')
+scaler_emission = joblib.load('scaleremission.pkl')
 
-Co2 = None  # Declare Co2 here
-
-@app.before_request
-def load_table():
-    global Co2  # Use the global Co2 variable
-    if Co2 is None:
-        print("Loading table 'co2'...")
-        # Reflect your existing database into a new model
-        Co2 = Table('co2', meta, autoload_with=db.engine)
-        print("Table 'co2' loaded successfully.")
+model_energy = joblib.load('modelenergy.pkl')
+scaler_energy = joblib.load('scalerenergy.pkl')
 
 @app.route('/')
 def index():
-    print("Processing request for index...")
-    stmt = select(Co2)  # construct the SELECT * FROM co2 query
-    with db.engine.begin() as connection:
-        result = connection.execute(stmt)  # execute the query
-        data = result.fetchall()  # fetch all rows from the result
-    return render_template('index.html', data=data)
+    return render_template('index.html')
 
-@app.route('/predict', methods=['GET'])
-def predict():
-    # Get the parameters from the URL
-    param1 = float(request.args.get('param1', default=88434.0))
-    param2 = float(request.args.get('param2', default=1.0))
-    param3 = float(request.args.get('param3', default=1.0))
-    param4 = float(request.args.get('param4', default=1.0))
-    param5 = float(request.args.get('param5', default=88434.0))
+@app.route('/predict_emission', methods=['GET'])
+def predict_emission():
+    # Récupérer le paramètre depuis l'URL
+    param1 = float(request.args.get('param1'))
+    # Mettre à l'échelle le paramètre à l'aide du scaler entrainé
+    scaled_param1 = scaler_emission.transform(np.array([[param1]]))
+    # Faire une prédiction
+    prediction = model_emission.predict(scaled_param1)
+    # Retourner la prédiction
+    return f"Prédiction des émissions de CO2: {prediction[0]}"
 
-    # Make a prediction
-    prediction = model.predict([[param1, param2, param3, param4, param5]])
-
-    # Return the prediction
-    return str(prediction[0])
+@app.route('/predict_energy', methods=['GET'])
+def predict_energy():
+    # Récupérer le paramètre depuis l'URL
+    param2 = float(request.args.get('param2'))
+    # Mettre à l'échelle le paramètre à l'aide du scaler entrainé
+    scaled_param2 = scaler_energy.transform(np.array([[param2]]))
+    # Faire une prédiction
+    prediction = model_energy.predict(scaled_param2)
+    # Retourner la prédiction
+    return f"Prédiction de la consommation d'énergie: {prediction[0]}"
 
 if __name__ == "__main__":
     print("Starting the app...")

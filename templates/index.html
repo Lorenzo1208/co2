@@ -1,21 +1,54 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>CO2 Data</title>
+    <title>CO2 and Energy Data</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
 </head>
 <body>
-    <h1>CO2 Data</h1>
-    <form action="/predict" method="GET">
-        <button type="submit">Predict</button>
-    </form>
-    <table>
-        {% for row in data %}
-        <tr>
-            {% for value in row %}
-            <td>{{ value }}</td>
-            {% endfor %}
-        </tr>
-        {% endfor %}
-    </table>
+    <div class="container">
+        <h1 class="mt-4 mb-4">Prédictions Seattle</h1>
+        
+        <div class="row">
+            <div class="col-md-6">
+                <h2>Prédiction CO2</h2>
+                <div class="form-group">
+                    <label for="param1">Superficie:</label>
+                    <input type="number" class="form-control" id="param1" step="0.01" value="0.0">
+                </div>
+                <button class="btn btn-primary" id="predict_emission_button">Prédiction</button>
+                <p id="emission_result"></p>
+            </div>
+            
+            <div class="col-md-6">
+                <h2>Prédiction kBtu</h2>
+                <div class="form-group">
+                    <label for="param2">Superficie:</label>
+                    <input type="number" class="form-control" id="param2" step="0.01" value="0.0">
+                </div>
+                <button class="btn btn-primary" id="predict_energy_button">Prédiction</button>
+                <p id="energy_result"></p>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        $(document).ready(function() {
+            $("#predict_emission_button").click(function() {
+                var param1 = $("#param1").val();
+                $.get("/predict_emission", { param1: param1 }, function(data) {
+                    $("#emission_result").text("" + data);
+                });
+            });
+            
+            $("#predict_energy_button").click(function() {
+                var param2 = $("#param2").val();
+                $.get("/predict_energy", { param2: param2 }, function(data) {
+                    $("#energy_result").text("" + data);
+                });
+            });
+        });
+    </script>
 </body>
 </html>
