@@ -42,11 +42,11 @@ def index():
 @app.route('/predict', methods=['GET'])
 def predict():
     # Get the parameters from the URL
-    param1 = float(request.args.get('param1', default=0.0))
-    param2 = float(request.args.get('param2', default=0.0))
-    param3 = float(request.args.get('param3', default=0.0))
-    param4 = float(request.args.get('param4', default=0.0))
-    param5 = float(request.args.get('param5', default=0.0))
+    param1 = float(request.args.get('param1', default=88434.0))
+    param2 = float(request.args.get('param2', default=1.0))
+    param3 = float(request.args.get('param3', default=1.0))
+    param4 = float(request.args.get('param4', default=1.0))
+    param5 = float(request.args.get('param5', default=88434.0))
 
     # Make a prediction
     prediction = model.predict([[param1, param2, param3, param4, param5]])

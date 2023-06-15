@@ -5,6 +5,9 @@
 </head>
 <body>
     <h1>CO2 Data</h1>
+    <form action="/predict" method="GET">
+        <button type="submit">Predict</button>
+    </form>
     <table>
         {% for row in data %}
         <tr>
