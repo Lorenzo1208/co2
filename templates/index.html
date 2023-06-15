@@ -5,8 +5,15 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+    <style>
+        body.dark-mode, .dark-mode .form-control {
+            background-color: #222;
+            color: #DDD;
+        }
+    </style>
 </head>
-<body>
+<body class="dark-mode">
+    <button class="btn btn-secondary position-fixed mr-3 mt-3" id="toggle_dark_mode" style="right:0; top:0;">🌖</button>
     <div class="container">
         <h1 class="mt-4 mb-4">Prédictions Seattle</h1>
         
@@ -31,21 +38,27 @@
                 <p id="energy_result"></p>
             </div>
         </div>
+        <iframe title="bi" width="1140" height="541.25" src="https://app.powerbi.com/reportEmbed?reportId=bd962ec8-967f-4aa1-bc03-3361e29111e2&autoAuth=true&embeddedDemo=true" frameborder="0" allowFullScreen="true"></iframe>
     </div>
     
     <script>
+        
         $(document).ready(function() {
+            $("#toggle_dark_mode").click(function() {
+                $("body").toggleClass("dark-mode");
+            });
+
             $("#predict_emission_button").click(function() {
                 var param1 = $("#param1").val();
                 $.get("/predict_emission", { param1: param1 }, function(data) {
-                    $("#emission_result").text("" + data);
+                    $("#emission_result").text(data);
                 });
             });
             
             $("#predict_energy_button").click(function() {
                 var param2 = $("#param2").val();
                 $.get("/predict_energy", { param2: param2 }, function(data) {
-                    $("#energy_result").text("" + data);
+                    $("#energy_result").text(data);
                 });
             });
         });
