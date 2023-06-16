@@ -2,41 +2,61 @@ import os
 from flask import Flask, render_template, request
 import joblib
 import numpy as np
+import pandas as pd
+import pickle
 
 app = Flask(__name__)
 
-# Charger les modèles et les scalers
-model_emission = joblib.load('modelemission.pkl')
-scaler_emission = joblib.load('scaleremission.pkl')
+# Charger le modèle et le scaler
+multi_model = joblib.load('multimodel.pkl')
+multi_scaler = joblib.load('multiscaler.pkl')
 
-model_energy = joblib.load('modelenergy.pkl')
-scaler_energy = joblib.load('scalerenergy.pkl')
+# Charger les données pour obtenir les PrimaryPropertyType
+df_train = pd.read_csv('column_list.csv')
+primary_property_types = df_train.columns.tolist()
+
+# Créer une dataframe vide avec les bonnes colonnes
+df_predict = pd.DataFrame(columns=primary_property_types)
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    return render_template('index.html', primary_property_types=primary_property_types[1:]) # ignore the first item which is 'LargestPropertyUseTypeGFA'
 
-@app.route('/predict_emission', methods=['GET'])
-def predict_emission():
-    # Récupérer le paramètre depuis l'URL
-    param1 = float(request.args.get('param1'))
-    # Mettre à l'échelle le paramètre à l'aide du scaler entrainé
-    scaled_param1 = scaler_emission.transform(np.array([[param1]]))
-    # Faire une prédiction
-    prediction = model_emission.predict(scaled_param1)
-    # Retourner la prédiction
-    return f"Prédiction des émissions de CO2: {prediction[0]}"
+@app.route('/predict', methods=['GET'])
+def predict():
+    # Récupérer les paramètres depuis l'URL
+    LargestPropertyUseTypeGFA = request.args.get('LargestPropertyUseTypeGFA')
+    # print(f"LargestPropertyUseTypeGFA: {LargestPropertyUseTypeGFA}")  # Ajouté pour le débogage
 
-@app.route('/predict_energy', methods=['GET'])
-def predict_energy():
-    # Récupérer le paramètre depuis l'URL
-    param2 = float(request.args.get('param2'))
-    # Mettre à l'échelle le paramètre à l'aide du scaler entrainé
-    scaled_param2 = scaler_energy.transform(np.array([[param2]]))
+    # Convertissez LargestPropertyUseTypeGFA en float
+    LargestPropertyUseTypeGFA = float(LargestPropertyUseTypeGFA)
+
+    PrimaryPropertyType = request.args.get('PrimaryPropertyType')
+    # print(f"PrimaryPropertyType: {PrimaryPropertyType}")  # Ajouté pour le débogage
+
+    # Créer une ligne de données avec la valeur pour LargestPropertyUseTypeGFA et des zéros pour les types de propriété
+    data = {col: [0] for col in primary_property_types}
+    data['LargestPropertyUseTypeGFA'] = [LargestPropertyUseTypeGFA]
+    data[PrimaryPropertyType] = [1]  # mettre la valeur à 1 pour le type de propriété sélectionné
+
+    # Imprimez les données pour le débogage
+    # print(f"Data: {data}")
+
+    # Créer un DataFrame à partir de ces données
+    df_predict_request = pd.DataFrame(data)
+
+    # Réorganiser les colonnes pour correspondre à l'ordre souhaité (LargestPropertyUseTypeGFA first)
+    columns_order = ['LargestPropertyUseTypeGFA'] + [col for col in df_train.columns if col != 'LargestPropertyUseTypeGFA']
+    df_predict_request = df_predict_request[columns_order]
+
+    # Mettre à l'échelle uniquement la caractéristique LargestPropertyUseTypeGFA à l'aide du scaler entraîné
+    df_predict_request['LargestPropertyUseTypeGFA'] = multi_scaler.transform(df_predict_request[['LargestPropertyUseTypeGFA']])
+
     # Faire une prédiction
-    prediction = model_energy.predict(scaled_param2)
-    # Retourner la prédiction
-    return f"Prédiction de la consommation d'énergie: {prediction[0]}"
+    predictions = multi_model.predict(df_predict_request)
+
+    # Retourner les prédictions
+    return f"{predictions[0][0]} {predictions[0][1]}"
 
 if __name__ == "__main__":
     print("Starting the app...")
