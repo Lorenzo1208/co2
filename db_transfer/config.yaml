@@ -1,0 +1,6 @@
+sqltype: postgresql
+user: greta
+port: 5432
+password: root12..
+host: serveur-cl.postgres.database.azure.com
+database: co2

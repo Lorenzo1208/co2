@@ -28,7 +28,10 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
 
-    # Optional: Add step to run tests here (PyTest, Django test suites, etc.)
+    - name: Run Tests
+      run: |
+        source venv/bin/activate
+        pytest test_app.py
 
     - name: Upload artifact for deployment jobs
       uses: actions/upload-artifact@v2
@@ -58,3 +61,5 @@ jobs:
         app-name: 'co2app'
         slot-name: 'Production'
         publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_01C9B7078B3240EA85F44D478BA3FFC7 }}
+        images: |
+          containerregistry.azurecr.io/app-image:latest

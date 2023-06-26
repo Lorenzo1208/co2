@@ -6,15 +6,15 @@
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
     <style>
-        body.dark-mode, .dark-mode .form-control, .dark-mode h2, .dark-mode label, .dark-mode button {
-            background-color: #222;
-            color: #DDD;
-        }
+    body.dark-mode, .dark-mode .form-control, .dark-mode h2, .dark-mode label, .dark-mode button, .dark-mode .card {
+        background-color: #222;
+        color: #DDD;
+    }
         
-        body.light-mode, .light-mode .form-control, .light-mode h2, .light-mode label, .light-mode button {
-            background-color: #FFF;
-            color: #222;
-        }
+    body.light-mode, .light-mode .form-control, .light-mode h2, .light-mode label, .light-mode button, .light-mode .card {
+        background-color: #FFF;
+        color: #222;
+    }
 
         /* Styles pour la prédiction */
         .prediction {
@@ -24,16 +24,16 @@
         
         /* Styles pour le parallaxe */
         .parallax {
-            background-image: url('https://images.unsplash.com/photo-1502175353174-a7a70e73b362?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1426&q=80');
+            background-image: url('https://www.law.uw.edu/media/142015/seattle-skyline-purple.jpg');
             background-attachment: fixed;
             background-position: center;
             background-repeat: no-repeat;
             background-size: cover;
-            height: 500px; /* Hauteur de l'image de parallaxe */
+            height: 1000px; /* Hauteur de l'image de parallaxe */
         }
         
         .parallax-content {
-            margin-top: 50px; /* Marge supérieure pour centrer le contenu par rapport à l'image de parallaxe */
+             /* Marge supérieure pour centrer le contenu par rapport à l'image de parallaxe */
             color: #FFF;
             text-align: center;
         }
@@ -49,24 +49,286 @@
     transform: translate(-50%, -50%) rotate(180deg);
 }
 
+
+.switch {
+ font-size: 1rem;
+ position: relative;
+ display: inline-block;
+ width: 4em;
+ height: 2em;
+}
+
+/* Hide default HTML checkbox */
+.switch input {
+ opacity: 0;
+ width: 0;
+ height: 0;
+}
+
+/* The slider */
+.slider {
+ position: absolute;
+ cursor: pointer;
+ inset: 0;
+ background-color: #eee;
+ transition: 0.4s;
+ border-radius: 0.2em;
+ box-shadow: 0 0.2em #dfd9d9;
+}
+
+.slider:before {
+ position: absolute;
+ content: "";
+ height: 1.5em;
+ width: 1.4em;
+ border-radius: 0.2em;
+ left: 0.3em;
+ bottom: 0.7em;
+ background-color: rgb(7, 7, 7);
+ transition: 0.4s;
+ box-shadow: 0 0.4em #bcb4b4;
+}
+
+.slider:hover::before {
+ box-shadow: 0 0.2em #bcb4b4;
+ bottom: 0.5em;
+}
+
+input:checked+.slider:before {
+ transform: translateX(2em);
+ background: rgb(248, 246, 246);
+}
+
+
+
+
+
+.styled-button {
+  padding: 10px 20px;
+  text-transform: uppercase;
+  border-radius: 8px;
+  font-size: 17px;
+  font-weight: 500;
+  color: #ffffff;
+  text-shadow: none;
+  background: transparent;
+  box-shadow: transparent;
+  /* border: 1px solid #ffffff80; */
+  transition: 0.5s ease;
+  user-select: none;
+}
+
+.styled-button:hover,
+.styled-button:focus {
+  color: #ffffff;
+  background: #da17d0;
+  border: 1px solid #da17d0;
+  text-shadow: 0 0 5px #ffffff,
+              0 0 10px #ffffff,
+              0 0 20px #ffffff;
+  box-shadow: 0 0 5px #da17d0,
+              0 0 20px #da17d0,
+              0 0 50px #da17d0,
+              0 0 100px #da17d0;
+}
+
+.card {
+    min-width: 190px;
+    max-width: 380px; /* Définir une largeur maximale de 380px ou la valeur que vous souhaitez */
+    min-height: 254px;
+    background: rgb(46, 44, 44);
+    transition: all 300ms;
+    display: none;
+    overflow-y: auto;
+}
+
+
+
+.card:hover {
+ opacity: 0.8;
+ transform: scale(1.10);
+}
+
+.card-container {
+        display: flex;
+        justify-content: center;
+    }
+    
+    .dark-mode .card {
+        background-color: #333; /* Changer selon les besoins */
+    }
+    
+    .light-mode .card {
+        background-color: #FFF; /* Changer selon les besoins */
+    }
+
+    #csv_file {
+        display: none;
+    }
+    .upload-btn {
+        display: inline-block;
+        padding: 10px 20px;
+        color: #fff;
+        background: #da17d0;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 15px;
+        text-transform: uppercase;
+    }
+    p, button, #card_prediction {
+    margin: 50px;
+}
+
+.title {
+    color: #FFF; /* Couleur blanche */
+    font-size: 4em; /* Taille de police plus grande */
+    text-align: center; /* Centrer le texte */
+    padding-top: 20%; /* Ajuster le positionnement vertical */
+    font-family: 'Caprasimo', sans-serif;
+}
+
+.scroll-button {
+    width: 140px;
+    height: 56px;
+    overflow: hidden;
+    border: none;
+    color: #fff;
+    background: none;
+    position: relative;
+    padding-bottom: 2em;
+    border-radius: 10px;
+}
+
+.scroll-button > div, .scroll-button > svg {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    display: flex;
+}
+
+.scroll-button:before {
+    content: "";
+    position: absolute;
+    height: 2px;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    transform: scaleX(0);
+    transform-origin: bottom right;
+    background: currentColor;
+    transition: transform 0.25s ease-out;
+}
+
+.scroll-button:hover:before {
+    transform: scaleX(1);
+    transform-origin: bottom left;
+}
+
+.scroll-button .clone > *, .scroll-button .text > * {
+    opacity: 1;
+    font-size: 1.3rem;
+    transition: 0.2s;
+    margin-left: 4px;
+}
+
+.scroll-button .clone > * {
+    transform: translateY(60px);
+}
+
+.scroll-button:hover .clone > * {
+    opacity: 1;
+    transform: translateY(0px);
+    transition: all 0.2s cubic-bezier(0.215, 0.61, 0.355, 1) 0s;
+}
+
+.scroll-button:hover .text > * {
+    opacity: 1;
+    transform: translateY(-60px);
+    transition: all 0.2s cubic-bezier(0.215, 0.61, 0.355, 1) 0s;
+}
+
+.scroll-button:hover .clone > :nth-child(1) {
+    transition-delay: 0.15s;
+}
+
+.scroll-button:hover .clone > :nth-child(2) {
+    transition-delay: 0.2s;
+}
+
+.scroll-button:hover .clone > :nth-child(3) {
+    transition-delay: 0.25s;
+}
+
+.scroll-button:hover .clone > :nth-child(4) {
+    transition-delay: 0.3s;
+}
+
+.scroll-button svg {
+    width: 20px;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%) rotate(50deg); /* Rotation initial modifiée */
+    transition: 0.2s ease-out;
+}
+
+.scroll-button:hover svg {
+    transform: translateY(-50%) rotate(90deg); /* Rotation lors du survol modifiée */
+}
+.scroll-button {
+    /* Autres styles... */
+    font-family: 'Caprasimo', sans-serif;
+}
+h1, h2 {
+    font-family: 'Caprasimo', sans-serif;
+}
+
     </style>
+      <link href="https://fonts.googleapis.com/css?family=Caprasimo" rel="stylesheet">
+
 </head>
 <body class="dark-mode">
-    <div class="parallax"></div>
+    <div class="parallax">
+        <div class="parallax-content">
+            <h1 class="title">Seattle Predictions Project</h1>
+            <button class="scroll-button">
+                <div class="text">
+                    <span>Scroll</span>
+                </div>
+                <div class="clone">
+                    <span>Lets</span>
+                    <span>Go ! 🚀</span>
+                </div>
+                <svg width="20px" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+                </svg>
+            </button>
+            
+        </div>
+        
+    </div>
     
     <div class="container">
         <div class="row">
             <div class="col-md-12">
-                <h1 class="text-center my-4">Prédictions Seattle</h1>
+
+                <h1 class="text-center my-4">Prédiction du CO2 et de l'Énergie</h1>
                 
                 <div class="parallax-content">
-                    <h2>Prédiction CO2 et Énergie</h2>
+                   
+
+                    <form id="upload_form" enctype="multipart/form-data">
+                        <input type="file" id="csv_file" name="csv_file" accept=".csv">
+                        <button type="button" class="styled-button" id="upload_btn">Choisir un fichier</button>
+                        <button type="submit" id="upload_button"  class="styled-button">Upload</button>
+                    </form>
+                       
                     <div class="form-group">
-                        <label for="param1">LargestPropertyUseTypeGFA:</label>
+                        <label for="param1">Surface la plus importante d'utilisation du type de propriété :</label>
                         <input type="number" class="form-control" id="param1" step="0.01" value="0.0">
                     </div>
                     <div class="form-group">
-                        <label for="PrimaryPropertyType">PrimaryPropertyType:</label>
+                        <label for="PrimaryPropertyType">Type de propriété principal :</label>
                         <select class="form-control" id="PrimaryPropertyType">
                             {% for property_type in primary_property_types|sort %}
                             <option value="{{ property_type }}">{{ property_type[20:] }}</option>
@@ -74,9 +336,9 @@
                         </select>
                     </div>   
 
-                    <button class="btn btn-primary btn-lg position-relative" id="predict_button">
+                    <button id="predict_button" class="styled-button">
                         Prédiction
-                        <div id="spinner" class="spinner-border text-primary spinner-offset" role="status" style="display: none;">
+                        <div id="spinner" class="spinner-border text-dark spinner-offset" role="status" style="display: none;">
                             <span class="visually-hidden spinner-icon">🚀</span>
                         </div>
                     </button>
@@ -85,21 +347,58 @@
                     
 
                     <div class="mt-4">
-                        <button class="btn btn-success prediction-btn" id="site_energy_prediction_btn" style="display: none;">
+                        <button class="btn styled-button" id="site_energy_prediction_btn" style="display: none;">
                             <span class="spinner-border spinner-border-sm mr-2" role="status" aria-hidden="true"></span>
                             Prédiction SiteEnergyUse(kBtu)
                         </button>
-                        <button class="btn btn-success prediction-btn" id="total_ghg_prediction_btn" style="display: none;">
+                        <button class="btn styled-button" id="total_ghg_prediction_btn" style="display: none;">
                             <span class="spinner-border spinner-border-sm mr-2" role="status" aria-hidden="true"></span>
                             Prédiction TotalGHGEmissions
                         </button>
                     </div>
+
+                    <div class="card-container">
+                        <div class="card">
+                            <div class="mt-4">
+                                <button class="btn styled-button" id="site_energy_prediction_btn" style="display: none;">
+                                    <span class="spinner-border spinner-border-sm mr-2" role="status" aria-hidden="true"></span>
+                                    Prédiction SiteEnergyUse(kBtu)
+                                </button>
+                                <button class="btn prediction-btn" id="total_ghg_prediction_btn" style="display: none;">
+                                    <span class="spinner-border spinner-border-sm mr-2" role="status" aria-hidden="true"></span>
+                                    Prédiction TotalGHGEmissions
+                                </button>
+                            </div>
+                    
+                            <p id="site_energy_prediction" style="display: none;"></p>
+                            <p id="total_ghg_prediction" style="display: none;"></p>
+                        </div>
+                    </div>
+                    
                 </div>
                 
-                <button class="btn btn-secondary position-fixed mr-3 mt-3" id="toggle_dark_mode" style="right:0; top:0;">🌖</button>
+                <label class="switch position-fixed mr-3 mt-3" style="right:0; top:0;">
+                    <input type="checkbox" id="toggle_dark_mode">
+                    <span class="slider"></span>
+                </label>
                 
-                <div class="mt-4">
+                <div class="d-flex justify-content-center align-items-center" style="height: 2vh;">
+                    
+                </div>
+
+                <div class="d-flex justify-content-center align-items-center">
+                    <button id="dashboard_button" class="styled-button mb-4">
+                        Dashboard
+                    </button>
+                </div>
+                
+                
+                <div class="mt-4" id="dashboard" style="display: none;">
                     <iframe title="bi" width="1140" height="661.25" src="https://app.powerbi.com/reportEmbed?reportId=bd962ec8-967f-4aa1-bc03-3361e29111e2&autoAuth=true&embeddedDemo=true" frameborder="0" allowFullScreen="true"></iframe>
+                </div>
+
+                <div class="d-flex justify-content-center align-items-center" style="height: 51vh;">
+                    
                 </div>
             </div>
         </div>
@@ -108,36 +407,102 @@
     
     <script>
         $(document).ready(function() {
-            $("#toggle_dark_mode").click(function() {
+            $('#upload_btn').click(function(){
+                
+            $('#csv_file').trigger('click');
+        });
+            // Modifier la fonction pour qu'elle soit déclenchée lorsque le switch est coché ou décoché
+            $("#toggle_dark_mode").change(function() {
                 $("body").toggleClass("dark-mode light-mode");
+                
             });
+            $(".scroll-button").click(function() {
+        $('html, body').animate({
+            scrollTop: $(".parallax").height()
+        }, 1000); // 1000 est la durée de l'animation en millisecondes
+    });
+            $('form').on('submit', function(event) {
+    event.preventDefault();
+    var formData = new FormData(this);
+                
+    $.ajax({
+        type: 'POST',
+        url: '/upload',
+        data: formData,
+        contentType: false,
+        cache: false,
+        processData: false,
+        beforeSend: function() {
+            // Afficher le spinner avant l'envoi du fichier
+            $("#spinner").show();
+        },
+        success: function(data) {
+            // Les prédictions sont maintenant dans la variable `data` sous forme d'une liste de listes
 
+            // Vider les prédictions dans la carte
+            $("#site_energy_prediction").empty();
+            $("#total_ghg_prediction").empty();
+
+            // Parcourir les prédictions et ajouter chacune à la carte
+            for (var i = 0; i < data.length; i++) {
+                var prediction = data[i];
+
+                // Formater les valeurs des prédictions
+                var site_energy_prediction = prediction[0].toFixed(3);  // Conserver 3 décimales
+                var total_ghg_prediction = prediction[1].toFixed(3);  // Conserver 3 décimales
+
+                // Ajouter la prédiction à la carte
+                $("#site_energy_prediction").append("Prédiction " + (i+1) + " SiteEnergyUse(kBtu): " + site_energy_prediction + "<br>");
+                $("#total_ghg_prediction").append("Prédiction " + (i+1) + " TotalGHGEmissions: " + total_ghg_prediction + "<br>");
+            }
+
+            // Faire apparaître la carte progressivement
+            $(".card").hide().fadeIn(1000);
+
+            // Afficher les prédictions
+            $("#site_energy_prediction").show();
+            $("#total_ghg_prediction").show();
+
+            // Cacher le spinner après la prédiction
+            $("#spinner").hide();
+        },
+    });
+});
+        
             $("#predict_button").click(function() {
                 var LargestPropertyUseTypeGFA = $("#param1").val();
                 var PrimaryPropertyType = $("#PrimaryPropertyType").val();
-
+        
                 // Afficher le spinner avant la prédiction
                 $("#spinner").show();
-
+        
                 setTimeout(function() {
                     $.get("/predict", {
                         LargestPropertyUseTypeGFA: LargestPropertyUseTypeGFA,
                         PrimaryPropertyType: PrimaryPropertyType
                     }, function(data) {
                         var predictions = data.split(" ");
-                        $("#site_energy_prediction_btn").text("Prédiction SiteEnergyUse(kBtu): " + predictions[0]);
-                        $("#total_ghg_prediction_btn").text("Prédiction TotalGHGEmissions: " + predictions[1]);
-
+        
+                        // Afficher les prédictions dans la carte
+                        $("#site_energy_prediction").text("Prédiction SiteEnergyUse(kBtu): " + predictions[0]).show();
+                        $("#total_ghg_prediction").text("Prédiction TotalGHGEmissions: " + predictions[1]).show();
+        
+                        // Faire apparaître la carte progressivement
+                        $(".card").hide().fadeIn(1000);
+        
                         // Cacher le spinner après la prédiction
                         $("#spinner").hide();
-
-                        // Afficher les boutons de prédiction
-                        $(".prediction-btn").show();
                     });
-                }, 2500); // Temps d'attente de 2 secondes avant d'afficher le résultat (vous pouvez ajuster cette valeur selon vos besoins)
+                }, 2000);
             });
+        
+            $("#dashboard_button").click(function() {
+                $("#dashboard").toggle();
+            });
+        
         });
-    </script>
+        </script>
+        
     
 </body>
 </html>

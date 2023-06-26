@@ -13,10 +13,61 @@ multi_scaler = joblib.load('multiscaler.pkl')
 
 # Charger les données pour obtenir les PrimaryPropertyType
 df_train = pd.read_csv('column_list.csv')
+
 primary_property_types = df_train.columns.tolist()
 
 # Créer une dataframe vide avec les bonnes colonnes
 df_predict = pd.DataFrame(columns=primary_property_types)
+
+import os
+from flask import Flask, request
+from werkzeug.utils import secure_filename
+import joblib
+import numpy as np
+import pandas as pd
+import pickle
+from flask import jsonify
+
+ALLOWED_EXTENSIONS = {'csv'}
+
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+@app.route('/upload', methods=['POST'])
+def upload_file():
+    if 'csv_file' not in request.files:
+        return jsonify({'error': 'No file part'}), 400
+    file = request.files['csv_file']
+    if file.filename == '':
+        return jsonify({'error': 'No selected file'}), 400
+    if file and allowed_file(file.filename):
+        df = pd.read_csv(file, delimiter=';')
+
+
+        predictions = []
+        for index, row in df.iterrows():
+            primary_property_type = row['PrimaryPropertyType']
+            largest_property_use_type_gfa = row['LargestPropertyUseTypeGFA']
+
+            data = {col: [0] for col in primary_property_types}
+            data['LargestPropertyUseTypeGFA'] = [largest_property_use_type_gfa]
+            data[primary_property_type] = [1] 
+
+            df_predict_request = pd.DataFrame(data)
+
+            columns_order = ['LargestPropertyUseTypeGFA'] + [col for col in df_train.columns if col != 'LargestPropertyUseTypeGFA']
+            df_predict_request = df_predict_request[columns_order]
+
+            df_predict_request['LargestPropertyUseTypeGFA'] = multi_scaler.transform(df_predict_request[['LargestPropertyUseTypeGFA']])
+
+            prediction = multi_model.predict(df_predict_request)
+            predictions.append(prediction.flatten().tolist())
+
+        return jsonify(predictions)
+    else:
+        return jsonify({'error': 'Allowed file types are .csv'}), 400
+
 
 @app.route('/')
 def index():

@@ -4,3 +4,4 @@ psycopg2
 scikit-learn
 numpy
 pandas
+pytest
