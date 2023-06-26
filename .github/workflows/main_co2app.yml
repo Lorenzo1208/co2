@@ -23,13 +23,15 @@ jobs:
         username: ${{ secrets.AZURE_REGISTRY_USERNAME }}
         password: ${{ secrets.AZURE_REGISTRY_PASSWORD }}
 
-        
+
     - name: Build and push Docker image
       uses: docker/build-push-action@v2
       with:
         context: .
+        file: ./Dockerfile  # Add this line
         push: true
-        tags: appco2.azurecr.io/co2app:latest
+        tags: <registry-name>.azurecr.io/your-image-name:tag
+
 
   deploy:
     needs: build_and_push
