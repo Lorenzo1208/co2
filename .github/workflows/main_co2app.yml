@@ -47,3 +47,5 @@ jobs:
         publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_01C9B7078B3240EA85F44D478BA3FFC7 }}
         images: |
           appco2.azurecr.io/co2app:latest
+
+          
