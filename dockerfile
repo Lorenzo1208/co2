@@ -17,4 +17,4 @@ COPY . .
 EXPOSE 8000
 
 # Lancez l'application
-CMD ["python", "your_flask_app.py"]
+CMD ["gunicorn", "--bind", "0.0.0.0:8000", "app:app"]
