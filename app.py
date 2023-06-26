@@ -1,9 +1,13 @@
 import os
 from flask import Flask, render_template, request
+import numpy as np
+import pandas as pd
+from werkzeug.utils import secure_filename
 import joblib
 import numpy as np
 import pandas as pd
 import pickle
+from flask import jsonify
 
 app = Flask(__name__)
 
@@ -19,14 +23,6 @@ primary_property_types = df_train.columns.tolist()
 # Créer une dataframe vide avec les bonnes colonnes
 df_predict = pd.DataFrame(columns=primary_property_types)
 
-import os
-from flask import Flask, request
-from werkzeug.utils import secure_filename
-import joblib
-import numpy as np
-import pandas as pd
-import pickle
-from flask import jsonify
 
 ALLOWED_EXTENSIONS = {'csv'}
 
