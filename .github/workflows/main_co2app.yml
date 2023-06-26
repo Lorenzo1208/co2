@@ -42,7 +42,7 @@ jobs:
       uses: azure/webapps-deploy@v2
       id: deploy-to-webapp
       with:
-        app-name: 'co2app'
+        app-name: 'co2seattle'
         slot-name: 'Production'
         publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_01C9B7078B3240EA85F44D478BA3FFC7 }}
         images: |
