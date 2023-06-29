@@ -8,6 +8,7 @@ import numpy as np
 import pandas as pd
 import pickle
 from flask import jsonify
+from flask import send_from_directory
 
 app = Flask(__name__)
 
@@ -40,7 +41,6 @@ def upload_file():
     if file and allowed_file(file.filename):
         df = pd.read_csv(file, delimiter=';')
 
-
         predictions = []
         for index, row in df.iterrows():
             primary_property_type = row['PrimaryPropertyType']
@@ -60,14 +60,28 @@ def upload_file():
             prediction = multi_model.predict(df_predict_request)
             predictions.append(prediction.flatten().tolist())
 
+        # Convert the list of predictions to a DataFrame
+        df_predictions = pd.DataFrame(predictions, columns=['Prediction1', 'Prediction2'])
+
+        # Concatenate the original DataFrame with the predictions DataFrame
+        df = pd.concat([df, df_predictions], axis=1)
+
+        # Save the DataFrame with the predictions to a new CSV file
+        df.to_csv('predictions.csv', index=False, sep=';')
+
+
+        # Return the predictions as before
         return jsonify(predictions)
     else:
         return jsonify({'error': 'Allowed file types are .csv'}), 400
 
-
 @app.route('/')
 def index():
     return render_template('index.html', primary_property_types=primary_property_types[1:]) # ignore the first item which is 'LargestPropertyUseTypeGFA'
+
+@app.route('/download')
+def download_file():
+    return send_from_directory(os.getcwd(), 'predictions.csv')
 
 @app.route('/predict', methods=['GET'])
 def predict():
