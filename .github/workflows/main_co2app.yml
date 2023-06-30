@@ -1,4 +1,4 @@
-name: Build and deploy Python app to Azure Web App - co2app
+name: Construire et déployer l'application Python sur Azure Web App - co2app
 
 on:
   push:
@@ -10,34 +10,34 @@ jobs:
   build_and_push:
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout repository
+    - name: Récupérer le dépôt
       uses: actions/checkout@v2
 
-    - name: Set up Python
+    - name: Configurer Python
       uses: actions/setup-python@v2
       with:
         python-version: '3.x'
 
-    - name: Install dependencies
+    - name: Installer les dépendances
       run: |
         python -m pip install --upgrade pip
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
         pip install pytest
 
-    - name: Run pytest
+    - name: Exécuter pytest
       run: pytest ./test_app.py
 
-    - name: Set up Docker Buildx
+    - name: Configurer Docker Buildx  gestion plus efficace du cache de build, builds en parallèle pour différentes étapes, builds incrémentiels, ce qui signifie que seules les parties de l'image qui ont été modifiées seront reconstruites
       uses: docker/setup-buildx-action@v1
 
-    - name: Login to Azure Container Registry
+    - name: Se connecter au registre de conteneurs Azure
       uses: docker/login-action@v1 
       with:
         registry: appco2.azurecr.io
         username: ${{ secrets.AZURE_REGISTRY_USERNAME }}
         password: ${{ secrets.AZURE_REGISTRY_PASSWORD }}
 
-    - name: Build and push Docker image
+    - name: Construire et pousser l'image Docker
       uses: docker/build-push-action@v2
       with:
         context: .
