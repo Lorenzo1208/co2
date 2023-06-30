@@ -122,4 +122,4 @@ def predict():
 if __name__ == "__main__":
     print("Starting the app...")
     app.run(debug=True, port=8000)  # Run the app on port 8000
-    
+
